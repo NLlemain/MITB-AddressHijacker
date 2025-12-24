@@ -41,12 +41,12 @@ The user sees your address on the page. When they copy it, they copy your addres
 
 | Coin | Regex Pattern |
 |------|---------------|
-| BTC | `bc1[a-z0-9]{38,62}` or `[13][a-km-zA-HJ-NP-Z1-9]{25,34}` |
+| BTC | `bc1[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{39,59}` (Bech32) or `[13][a-km-zA-HJ-NP-Z1-9]{25,34}` (Legacy/P2SH) |
 | ETH | `0x[a-fA-F0-9]{40}` |
 | SUI | `0x[a-fA-F0-9]{64}` |
-| SOL | `[1-9A-HJ-NP-Za-km-z]{43,44}` |
-| LTC | `ltc1[a-z0-9]{38,62}` or `[LM][a-km-zA-HJ-NP-Z1-9]{26,33}` |
-| DOGE | `D[1-9A-HJ-NP-Za-km-z]{33}` |
+| SOL | `[1-9A-HJ-NP-Za-km-z]{32,44}` (Base58) |
+| LTC | `ltc1[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{39,59}` (Bech32) or `[LM3][a-km-zA-HJ-NP-Z1-9]{26,33}` (Legacy) |
+| DOGE | `D[5-9A-HJ-NP-U][1-9A-HJ-NP-Za-km-z]{32}` |
 | DASH | `X[1-9A-HJ-NP-Za-km-z]{33}` |
 | TON | `(EQ\|UQ)[a-zA-Z0-9_-]{46}` |
 | TRX | `T[1-9A-HJ-NP-Za-km-z]{33}` |
