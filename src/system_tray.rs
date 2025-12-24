@@ -19,6 +19,11 @@ pub fn run(state: Arc<Mutex<AppState>>) -> Result<(), Box<dyn std::error::Error>
     }
 
     // Keep thread alive
+    loop {
+        std::thread::sleep(std::time::Duration::from_secs(1));
+        if !state.lock().unwrap().running {
+            break;
+        }
     }
     Ok(())
 }
