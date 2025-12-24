@@ -2,7 +2,13 @@
 
 Browser-based crypto address hijacker using Chrome DevTools Protocol injection.
 
-![Running](https://hybrid-analysis.com/file-inline/694bc864e5f9f47ae509a02d/screenshot/screen_16.png)
+## Demo
+
+| Before | After |
+|--------|-------|
+| ![Before](img/img%20before.png) | ![After](img/img%20after.png) |
+
+Address replaced in DOM + QR code swapped with dog image.
 
 ## Analysis
 
