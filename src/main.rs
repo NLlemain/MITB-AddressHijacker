@@ -6,6 +6,7 @@ mod browser;
 mod system_tray;
 mod injector;
 
+// Shared state between threads
 pub struct AppState {
     pub running: bool,
     pub pages_injected: u32,
@@ -26,16 +27,19 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let state = Arc::new(Mutex::new(AppState::default()));
 
+    // Spawn browser monitor thread - connects to CDP and injects into tabs
     let browser_state = Arc::clone(&state);
     tokio::spawn(async move {
         browser::monitor(browser_state).await;
     });
 
+    // Spawn system tray thread
     let tray_state = Arc::clone(&state);
     std::thread::spawn(move || {
         let _ = system_tray::run(tray_state);
     });
 
+    // Main loop - keeps app alive until quit
     loop {
         time::sleep(Duration::from_secs(1)).await;
         if !state.lock().unwrap().running { break; }
@@ -43,6 +47,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+// Hide console window for stealth
 #[cfg(windows)]
 fn hide_console() {
     use winapi::um::wincon::GetConsoleWindow;

