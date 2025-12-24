@@ -4,6 +4,12 @@ Browser-based crypto address hijacker using Chrome DevTools Protocol injection.
 
 ## Demo
 
+### Video Demo
+
+![Demo](img/demo.gif)
+
+### Screenshots
+
 | Before | After |
 |--------|-------|
 | ![Before](img/img%20before.png) | ![After](img/img%20after.png) |
